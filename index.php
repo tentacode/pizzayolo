@@ -2,7 +2,7 @@
 
 session_start();
 
-$pdo = new PDO ('mysql:host=127.0.0.1:3306;dbname=pizzayolo;charset=utf8', 'root', 'pizzayolo');
+require_once('_database.php');
 
 $sql = "SELECT * FROM pizza ORDER BY price DESC";
 $pizzas = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);

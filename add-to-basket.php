@@ -2,7 +2,7 @@
 
 session_start();
 
-$pdo = new PDO ('mysql:host=127.0.0.1:3306;dbname=pizzayolo;charset=utf8', 'root', 'pizzayolo');
+require_once('_database.php');
 
 // on récupère l'id de la pizza à ajouter au panier
 if (!isset($_GET['pizzaId'])) {

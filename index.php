@@ -1,3 +1,13 @@
+<?php
+
+$pdo = new PDO ('mysql:host=127.0.0.1:3306;dbname=pizzayolo;charset=utf8', 'root', 'pizzayolo');
+
+$sql = "SELECT * FROM pizza ORDER BY price DESC";
+$pizzas = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -52,74 +62,36 @@
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                     <!-- Début liste pizzas -->
-                    <div class="col mb-5">
-                        <div class="card h-100">
-                            <!-- Sale badge-->
-                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Promo !</div>
-                            <!-- Product image-->
-                            <img class="card-img-top" src="./assets/pizzaquipique.png" alt="Pizzaquipique" />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">Pizzaquipique</h5>
-                                    <!-- Product price-->
-                                    <span class="text-muted text-decoration-line-through">15 €</span>
-                                    12,50 €
+                    <?php foreach ($pizzas as $pizza): ?>
+                        <div class="col mb-5">
+                            <div class="card h-100">
+                                <!-- Sale badge-->
+                                <?php if ($pizza['discount'] != 0): ?>
+                                    <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Promo !</div>
+                                <?php endif; ?>
+                                <!-- Product image-->
+                                <img class="card-img-top" src="./assets/<?php print $pizza['image'] ?>" alt="Pizzaquipique" />
+                                <!-- Product details-->
+                                <div class="card-body p-4">
+                                    <div class="text-center">
+                                        <!-- Product name-->
+                                        <h5 class="fw-bolder"><?php print $pizza['name'] ?></h5>
+                                        <!-- Product price-->
+                                        <?php if ($pizza['discount'] != 0): ?>
+                                            <span class="text-muted text-decoration-line-through"><?php print $pizza['price'] ?>€</span>
+                                            <?php print $pizza['price'] - $pizza['discount'] ?>€
+                                        <?php else: ?>
+                                            <?php print $pizza['price'] ?>€
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                                <!-- Product actions-->
+                                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Ajouter au panier</a></div>
                                 </div>
                             </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Ajouter au panier</a></div>
-                            </div>
                         </div>
-                    </div>
-
-                    <div class="col mb-5">
-                        <div class="card h-100">
-                            <!-- Sale badge-->
-                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Promo !</div>
-                            <!-- Product image-->
-                            <img class="card-img-top" src="./assets/pizzaquipique.png" alt="Pizzaquipique" />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">Pizzaquipique</h5>
-                                    <!-- Product price-->
-                                    <span class="text-muted text-decoration-line-through">15 €</span>
-                                    12,50 €
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Ajouter au panier</a></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col mb-5">
-                        <div class="card h-100">
-                            <!-- Sale badge-->
-                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Promo !</div>
-                            <!-- Product image-->
-                            <img class="card-img-top" src="./assets/pizzaquipique.png" alt="Pizzaquipique" />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">Pizzaquipique</h5>
-                                    <!-- Product price-->
-                                    <span class="text-muted text-decoration-line-through">15 €</span>
-                                    12,50 €
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Ajouter au panier</a></div>
-                            </div>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
 
                     <!-- Fin liste pizzas -->
                 </div>

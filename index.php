@@ -1,10 +1,11 @@
 <?php
 
+session_start();
+
 $pdo = new PDO ('mysql:host=127.0.0.1:3306;dbname=pizzayolo;charset=utf8', 'root', 'pizzayolo');
 
 $sql = "SELECT * FROM pizza ORDER BY price DESC";
 $pizzas = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-
 
 ?>
 
@@ -24,25 +25,8 @@ $pizzas = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
         <link href="css/theme.css" rel="stylesheet" />
     </head>
     <body>
-        <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="index.php">Pizza Yolo</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.php">La carte</a></li>
-                    </ul>
-                    <form class="d-flex">
-                        <a href="basket.php" class="btn btn-outline-dark" type="submit">
-                            <i class="bi-cart-fill me-1"></i>
-                            Panier
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">2</span>
-                        </a>
-                    </form>
-                </div>
-            </div>
-        </nav>
+        <?php include_once '_navigation.php'; ?>
+
         <!-- Header -->
         <header class="bg-dark py-5">
             <div class="container px-4 px-lg-5 my-5">
@@ -54,10 +38,13 @@ $pizzas = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
         </header>
         <!-- Pizza list -->
         <section class="py-5">
-            <!-- Notification -->
-            <div class="container alert alert-success px-4 px-lg-5" role="alert">
-                La pizza "test" a bien été ajoutée !
-            </div>
+            <?php if (isset($_SESSION['flash_message'])): ?>
+                <!-- Notification -->
+                <div class="container alert alert-success px-4 px-lg-5" role="alert">
+                    <?php print $_SESSION['flash_message'] ?>
+                </div>
+                <?php unset($_SESSION['flash_message']) ?>
+            <?php endif; ?>
 
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
@@ -87,7 +74,9 @@ $pizzas = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
                                 </div>
                                 <!-- Product actions-->
                                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Ajouter au panier</a></div>
+                                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="add-to-basket.php?pizzaId=<?php print $pizza['id']; ?>">
+                                        Ajouter au panier
+                                    </a></div>
                                 </div>
                             </div>
                         </div>

@@ -64,7 +64,7 @@ $basket = $_SESSION['basket'] ?? null;
                           </td>
                           <td class="pizza-price"><?= $pizza['price']; ?></td>
                           <td>
-                            <input onchange="" type="number" class="form-control w-25 pizza-quantity" value="<?= $pizza['quantity']; ?>" min="1">
+                            <input onchange="updatePrice()" type="number" class="form-control w-25 pizza-quantity" value="<?= $pizza['quantity']; ?>" min="1">
                             <a href="#" class="text-secondary">supprimer</a>
                           </td>
                         </tr>
@@ -85,6 +85,5 @@ $basket = $_SESSION['basket'] ?? null;
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
-
     </body>
 </html>

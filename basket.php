@@ -21,25 +21,8 @@ $basket = $_SESSION['basket'] ?? null;
         <link href="css/theme.css" rel="stylesheet" />
     </head>
     <body>
-        <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="index.html">Pizza Yolo</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">La carte</a></li>
-                    </ul>
-                    <form class="d-flex">
-                        <a href="basket.html" class="btn btn-outline-dark" type="submit">
-                            <i class="bi-cart-fill me-1"></i>
-                            Panier
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">2</span>
-                        </a>
-                    </form>
-                </div>
-            </div>
-        </nav>
+        <?php include_once '_navigation.php'; ?>
+
         <!-- Header -->
         <header class="bg-dark py-5">
             <div class="container px-4 px-lg-5 my-5">
@@ -54,9 +37,11 @@ $basket = $_SESSION['basket'] ?? null;
             <div class="container px-4 px-lg-5 mt-5">
                 <h1 class="my-4">Panier</h1>
 
-                <div class="alert alert-info">
-                    Votre panier est vide.
-                </div>
+                <?php if ($basket === null || empty($basket['pizzas'])): ?>
+                    <div class="alert alert-info">
+                        Votre panier est vide.
+                    </div>
+                <?php endif; ?>
 
                 <form>
                   <div class="mb-3">
@@ -71,23 +56,25 @@ $basket = $_SESSION['basket'] ?? null;
                       </thead>
                       <tbody>
                         <!-- Repeat this row for each pizza in the basket -->
+                        <?php foreach ($_SESSION['basket']['pizzas'] as $pizza): ?>
                         <tr class="pizza-item">
                           <td>
-                            <img src="./assets/pizzaquipique.png" width="100" class="rounded float-start " alt="Pizzaquipique">
-                            <span class="ms-3">Pizzaquipique</span>
+                            <img src="./assets/<?= $pizza['image']; ?>" width="100" class="rounded float-start " alt="<?= $pizza['name']; ?>">
+                            <span class="ms-3"><?= $pizza['name']; ?></span>
                           </td>
-                          <td class="pizza-price">12,50 €</td>
+                          <td class="pizza-price"><?= $pizza['price']; ?></td>
                           <td>
-                            <input type="number" class="form-control w-25 pizza-quantity" value="10" min="1">
+                            <input onchange="updatePrice()" type="number" class="form-control w-25 pizza-quantity" value="<?= $pizza['quantity']; ?>" min="1">
                             <a href="#" class="text-secondary">supprimer</a>
                           </td>
                         </tr>
+                        <?php endforeach; ?>
                       </tbody>
                     </table>
                   </div>
             
                   <div class="mb-3">
-                    <span class="fs-3">Prix de la commande : <span id="basket-price" class="text-primary fw-bolder">125,00 €</span></span>
+                    <span class="fs-3">Prix de la commande : <span id="basket-price" class="text-primary fw-bolder">12,50 €</span></span>
                   </div>
             
                   <button type="submit" class="btn btn-primary">Commander !</button>
